@@ -53,7 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Retrieve all users from the database
                       
 // Fech received messages from the database
-$received_messages_query = "SELECT sender, message, sent_at FROM messages WHERE recipient = ?";
+$received_messages_query = "SELECT id, sender, message, sent_at, is_read FROM messages WHERE recipient = ?";
+
 $stmt_received = $conn->prepare($received_messages_query);
 $stmt_received->bind_param("s", $name); // Use $email instead of $name
 $stmt_received->execute();
@@ -177,10 +178,7 @@ $conn->close();
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand"><?php echo ucwords($name)?></a>
-        <form class="d-flex" role="search">
-    <input class="form-control me-2" type="search" id="searchUser" placeholder="Search for a user" aria-label="Search">
-    <button class="btn btn-outline-success" type="submit">Search</button>
-</form>
+   
 
     </div>
     <form method="post">
@@ -206,30 +204,52 @@ $conn->close();
 <div class="container">
   <div class="row">
     <div class="col-lg-3" id="inbox-column">
-      <h2>Inbox</h2>
-      <!-- Add inbox content here -->
-      <div class="inbox-container">
+    <h2>Inbox</h2>
+<!-- Add inbox content here -->
+<div class="inbox-container">
     <div class="inbox">
         <div class="messages">
+            <form class="d-flex" role="search" method="get">
+                <input name="searchTerm" class="form-control me-2" type="search" id="searchUser" placeholder="Search for a user" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit" name="btn-search">Search</button>
+            </form>
             <?php
-            // Display received messages
+            // Display received messages based on search term
             while ($row = $result_received->fetch_assoc()) {
-                echo "<div class='message unread' style='background-color:white;' >";
-                echo "<button class='message-button' onclick='showFullMessage(this)' data-sender='" . htmlspecialchars($row["sender"]) . "' data-message='" . htmlspecialchars($row["message"]) . "' data-sent-at='" . htmlspecialchars($row["sent_at"]) . "' data-recipient-name='" . htmlspecialchars($row["sender"]) . "'>";
-                echo "<p>" . htmlspecialchars($row["sender"]) . "</p>";
-                echo "<p style='opacity:50%;' >" . htmlspecialchars($row["message"]) . "</p>";
-                echo "<p style='opacity:50%;'>" . htmlspecialchars($row["sent_at"]) . "</p>";
-                echo "</button>";
-                echo "</div>";
+                // Filter messages based on the search term
+                if (isset($_GET['searchTerm']) && !empty($_GET['searchTerm'])) {
+                    $searchTerm = $_GET['searchTerm'];
+                    $sender = $row['sender'];
+                    // If the sender's name contains the search term, display the message
+                    if (stripos($sender, $searchTerm) !== false) {
+                        echo "<div class='message unread' style='background-color:white;'>";
+                        echo "<button class='message-button' onclick='showFullMessage(this)' data-sender='" . htmlspecialchars($row["sender"]) . "' data-message='" . htmlspecialchars($row["message"]) . "' data-sent-at='" . htmlspecialchars($row["sent_at"]) . "' data-recipient-name='" . htmlspecialchars($row["sender"]) . "'>";
+                        echo "<p>" . htmlspecialchars($row["sender"]) . "</p>";
+                        echo "<p style='opacity:50%;'>" . htmlspecialchars($row["message"]) . "</p>";
+                        echo "<p style='opacity:50%;'>" . htmlspecialchars($row["sent_at"]) . "</p>";
+                        echo "</button>";
+                        echo "</div>";
+                    }
+                } else {
+                    // If no search term is provided, display all messages
+                    echo "<div class='message unread' style='background-color:white;'>";
+                    echo "<button class='message-button' onclick='showFullMessage(this)' data-sender='" . htmlspecialchars($row["sender"]) . "' data-message='" . htmlspecialchars($row["message"]) . "' data-sent-at='" . htmlspecialchars($row["sent_at"]) . "' data-recipient-name='" . htmlspecialchars($row["sender"]) . "'>";
+                    echo "<p>" . htmlspecialchars($row["sender"]) . "</p>";
+                    echo "<p style='opacity:50%;'>" . htmlspecialchars($row["message"]) . "</p>";
+                    echo "<p style='opacity:50%;'>" . htmlspecialchars($row["sent_at"]) . "</p>";
+                    echo "</button>";
+                    echo "</div>";
+                }
             }
-            
             ?>
-        </div>  
+
+            
+        </div>
     </div>
 </div>
-<div id="searchResults" class="mt-3">
-    <!-- Search results will be displayed here -->
-</div>
+
+
+
 
     </div>
     <div class="col-lg-9" id="messages-column">
@@ -242,7 +262,7 @@ $conn->close();
     <form action="" method="post">
         <div class="mb-3">
             <!-- <label for="recipient" class="form-label">Recipient:</label> -->
-            <input type="text" class="form-control" id="recipient" name="recipient" placeholder="Recipient's Email" value=""   readonly style="display: none;">
+            <input type="text" class="form-control" id="recipient" name="recipient" placeholder="name or message" value=""   readonly style="display: none;">
 
 
         </div>
@@ -270,11 +290,13 @@ $conn->close();
             </div>
             <div class="modal-body">
                 <!-- User list will be displayed here -->
-                
+        
                 <?php 
                 include "connect.php";
+              
                   $query = "SELECT name FROM user";
                         $result_users = $conn->query($query);
+                        $search = "SELECT name  FROM user WHERE LIKE %";
 
                         // Display each user as a message in the modal
                         if ($result_users->num_rows > 0) {
@@ -361,6 +383,14 @@ window.addEventListener('load', () => {
 function markAsRead(button) {
         // Add a 'read' class to the parent div of the clicked button
         button.parentNode.classList.add('read');
+}
+
+function markAsRead(messageId) {
+    // Find the message element
+    var message = document.getElementById(messageId);
+    // Change the appearance to indicate the message has been read
+    message.classList.remove('unread');
+    message.classList.add('read');
 }
 
 

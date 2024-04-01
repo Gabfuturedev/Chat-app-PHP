@@ -53,8 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Retrieve all users from the database
                       
 // Fech received messages from the database
-$received_messages_query = "SELECT id, sender, message, sent_at, is_read FROM messages WHERE recipient = ?";
-
+$received_messages_query = "SELECT sender, message, sent_at FROM messages WHERE recipient = ?";
 $stmt_received = $conn->prepare($received_messages_query);
 $stmt_received->bind_param("s", $name); // Use $email instead of $name
 $stmt_received->execute();
@@ -153,6 +152,8 @@ $conn->close();
     cursor: pointer;
     width: 100%;
     text-align: left;
+    border-radius: 20px;
+    padding: 10%;
 }
 
 .message-info {
@@ -165,9 +166,11 @@ $conn->close();
 }
 .message-button:hover {
     background-color: #f0f0f0; /* Change background color on hover */
+    transition: ease 0.5s; 
 }
 .message-button:active{
-    background-color: green;
+    background-color: wheat;
+    transition: ease 0.5s;
 }
 
 
@@ -242,8 +245,6 @@ $conn->close();
                 }
             }
             ?>
-
-            
         </div>
     </div>
 </div>
@@ -384,15 +385,6 @@ function markAsRead(button) {
         // Add a 'read' class to the parent div of the clicked button
         button.parentNode.classList.add('read');
 }
-
-function markAsRead(messageId) {
-    // Find the message element
-    var message = document.getElementById(messageId);
-    // Change the appearance to indicate the message has been read
-    message.classList.remove('unread');
-    message.classList.add('read');
-}
-
 
 </script>
 

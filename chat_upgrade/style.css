@@ -1,0 +1,329 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}.container{
+    width: 100%;
+    height: 100vh;
+    background-color: #3B3636;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}.user-container{
+    width: 20%;
+    height: 90vh;
+    background-color: #FDFDFF;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+     overflow-y: scroll;
+}.chat-container{
+    width: 90%;
+    height: 90vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    position: relative;
+    overlay: hidden;
+}.message-header{
+    text-align: center;
+    padding: 20px;
+}hr{
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #000;
+    margin-top: 10px;
+}.user{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    gap: 2%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 4px #EDEDED;
+}.message-notification{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    border: 1px solid #000;
+    
+}.message-preview,.time-stamp{
+    font-size: 12px;
+}.message-input{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 41px;
+    border-radius: 10px;
+    background-color: #DDD9D9;
+    border: none;
+    padding-left: 2%;
+    max-width: 992px;
+}.message-form{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0px -4px 4px #EDEDED;
+    position: absolute;
+    bottom: 0;
+
+
+}#send{
+    width: 100px;
+    height: 41px;
+    border-radius: 10px;
+    background-color: #1399EC;
+    color: #FDFDFF;
+    border: none;
+    cursor: pointer;
+}.reciepient-header{
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    background-color: #FDFDFF;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px #EDEDED;
+}.message-image{
+    width: 40px;
+    height: 40px;
+}#fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* semi-transparent black background */
+    z-index: 9999; /* make sure it's on top of everything */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#fullscreen-image {
+    max-width: 90%;
+    max-height: 90%;
+}
+.sent {
+    background-color: #1399EC;
+    color: #fff;
+    border-radius: 10px 10px 0 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: right;
+    width: max-content;
+    float: right; /* Move to the right */
+    clear: both;
+    max-width: 50%; /* Limit message width for better readability */
+    word-wrap: break-word; /* Allow long text to wrap */
+}
+
+.received {
+    background-color: #818186;
+    color: white;
+    border-radius: 0px 10px 10px 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: left;
+    width: max-content;
+    float: left; /* Keep received messages to the left */
+    clear: both;
+    max-width: 50%; /* Limit message width for better readability */
+    word-wrap: break-word; /* Allow long text to wrap */
+}.message-container{
+    overflow-y: scroll;
+    height: 70%;
+    overflow-x: hidden;
+}.message-item {
+    position: relative;
+    
+}.message-content{
+    position: relative;
+}
+/* Styling for the reply box */
+.replied-message {
+    margin: 10px 0; /* Add some space above and below the reply box */
+    padding: 10px; /* Add some padding inside the box */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    font-size: 0.9em; /* Slightly smaller font size to differentiate it from the main message */
+}
+
+/* Styling for the reply text */
+.replied-text {
+    color: #555; /* Dark grey for text */
+    font-style: italic; /* Italicize the reply text for emphasis */
+}
+
+/* Styling for the reply image */
+.replied-image {
+    max-width: 100px; /* Limit the size of the image to 100px width */
+    max-height: 100px; /* Limit the height to maintain aspect ratio */
+    border-radius: 4px; /* Slight rounding on image corners */
+    display: block; /* Make the image block-level so it doesn't wrap with text */
+    margin-top: 5px; /* Add space between the text and the image */
+}
+.message-options{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}.message-image{
+    contain: content;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+}.reply-content{
+    display: flex;
+}.replied-message{
+    background-color: #1399EC; /* Grey color for the reply */
+    padding: 10px;
+    border-radius: 10px;
+    max-width: auto;
+    text-align: left;
+    float: right; /* Align the reply message to the right */
+    clear: both; /* Ensure proper spacing from the next message */
+    width: auto; /* Adjust width to the content */
+    word-wrap: break-word; /* Allow long text to wrap */
+}.replied-image {
+    width: 100px;
+    height: 100px;
+}.message-options{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}.message-image{
+    contain: content;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+}.reply-content{    
+    display: flex;
+}.replied-image {
+    width: 100px;
+    height: 100px;
+}.message-options{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}.message-image{
+    contain: content;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+
+}.cancel-reply{
+    margin-left:auto;
+}.message-item.sent .message-options {
+    display: none;
+}.message-item.sent:hover .message-options {
+    position: absolute;
+    top:-30px;
+    right: 110%;
+    z-index: 10;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: rgb(231, 223, 223);
+    display: block;
+}
+
+/* Message options for received messages (aligned to the left) */
+.message-item.received .message-options {
+    display: none;
+}.message-item.received {
+    position: relative; /* Ensure parent is relative */
+}
+
+.message-item.received:hover .message-options {
+    display: block;
+    position: absolute;
+    background-color: #ddcece;
+    border-radius: 10px;
+    padding: 5px 10px;
+    top: -30px;  /* Align to the top of the message */
+    left: 100%; /* Position it directly to the right of the message */
+    margin-left: 10px; /* Add some space between the message and options */
+    z-index: 10;
+}
+
+
+.message-options .ellipsis {
+    cursor: pointer;
+    color:black;
+    font-size: 18px;
+    padding: 0 10px;
+    
+}
+
+.options-menu {
+    display: none; /* Hidden by default */
+    background-color: #fff;
+    position: absolute;
+    top: 30px; /* Position the dropdown below the ellipsis */
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.options-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    z-index: 10;
+}
+
+.options-menu button:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show the options menu on ellipsis click */
+.message-options:hover .options-menu {
+    display: block;
+}.replied-message{
+background-color: #eeeeee;
+color: #000;
+opacity: 50%;
+}.replied-text a {
+    color: blue; /* Link color */
+    text-decoration: none; /* Underline to signify it's clickable */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.replied-text a:hover {
+    color: darkblue; /* Change color on hover */
+}
+html{
+    scroll-behavior: smooth;
+}.new-message {
+    animation: flash 0.5s ease;
+}
+
+@keyframes flash {
+    0% { background-color: #f0f8ff; }
+    50% { background-color: #ffff99; }
+    100% { background-color: #f0f8ff; }
+}
